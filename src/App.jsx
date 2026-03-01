@@ -2,13 +2,13 @@ import { useEffect } from "react";
 import axios from "axios";
 import * as Cesium from "cesium";
 
+window.CESIUM_BASE_URL = "/Cesium";
+
 const BACKEND = "https://sentinel-backend-p99q.onrender.com";
 
 export default function App() {
   useEffect(() => {
-    const viewer = new Cesium.Viewer("cesiumContainer", {
-      terrainProvider: Cesium.createWorldTerrain(),
-    });
+    const viewer = new Cesium.Viewer("cesiumContainer");
 
     axios.get(`${BACKEND}/events`).then((res) => {
       res.data.forEach((event) => {
@@ -18,10 +18,10 @@ export default function App() {
             event.latitude || 0
           ),
           point: {
-            pixelSize: 10,
-            color: Cesium.Color.RED,
+            pixelSize: 8,
+            color: Cesium.Color.RED
           },
-          description: `<h3>${event.title}</h3><p>${event.summary}</p>`,
+          description: `<h3>${event.title}</h3><p>${event.summary}</p>`
         });
       });
     });
@@ -35,7 +35,7 @@ export default function App() {
       <div
         id="cesiumContainer"
         style={{ width: "100%", height: "90vh" }}
-      ></div>
+      />
     </div>
   );
 }
